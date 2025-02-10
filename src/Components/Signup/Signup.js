@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-
+import React, { useContext, useState } from 'react';
+import { useHistory} from 'react-router-dom'
 import Logo from '../../olx-logo.png';
 import './Signup.css';
+import { FirebaseContext } from '../../store/FirebaseContext';
 
 export default function Signup() {
 
@@ -9,10 +10,18 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [phone,setPhone] = useState('');
   const [password,setPassword] = useState('');
+  const {registerUser} = useContext(FirebaseContext)
+  const history = useHistory();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(username);
+    try {
+      const user = await registerUser(email, password, username, phone);
+      console.log("User created successfully:",user);
+      history.push('/login')
+    } catch (error) {
+      console.error("Error creating user: ", error.mesage);
+    }
   }
   return (
     <div>
