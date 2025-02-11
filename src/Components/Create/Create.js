@@ -6,6 +6,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { Fragment, useContext, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { db } from "../../firebase/config";
 
 const Create = () => {
   const [name, setName] = useState("");
@@ -13,7 +14,7 @@ const Create = () => {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
 
-  const {storage,db} = useContext(FirebaseContext);
+  const {storage} = useContext(FirebaseContext);
   const {user} = useContext(AuthContext);
 
   const history = useHistory();

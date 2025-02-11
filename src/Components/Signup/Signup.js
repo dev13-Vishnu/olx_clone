@@ -1,85 +1,113 @@
-import React, { useContext, useState } from 'react';
-import { useHistory} from 'react-router-dom'
-import Logo from '../../olx-logo.png';
-import './Signup.css';
-import { FirebaseContext } from '../../store/Context';
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import Logo from "../../olx-logo.png";
+import "./Signup.css";
+import { FirebaseContext } from "../../store/Context";
 
 export default function Signup() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({}); // Store validation errors
 
-  const [username,setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone,setPhone] = useState('');
-  const [password,setPassword] = useState('');
-  const {registerUser} = useContext(FirebaseContext)
+  const { registerUser } = useContext(FirebaseContext);
   const history = useHistory();
 
-  const handleSubmit = async(e) => {
+  const validateForm = () => {
+    let errors = {};
+    if (!username.trim()) {
+      errors.username = "Username is required";
+    } else if (username.length < 3) {
+      errors.username = "Username must be at least 3 characters";
+    }
+
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Email is not valid";
+    }
+
+    if (!phone.trim()) {
+      errors.phone = "Phone number is required";
+    } else if (!/^\d{10}$/.test(phone)) {
+      errors.phone = "Phone number must be 10 digits";
+    }
+
+    if (!password.trim()) {
+      errors.password = "Password is required";
+    } else if (password.length < 6) {
+      errors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0; // Return true if no errors
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) return; // Prevent submission if validation fails
+
     try {
       const user = await registerUser(email, password, username, phone);
-      console.log("User created successfully:",user);
-      history.push('/login')
+      console.log("User created successfully:", user);
+      history.push("/login");
     } catch (error) {
-      console.error("Error creating user: ", error.mesage);
+      console.error("Error creating user: ", error.message);
     }
-  }
+  };
+
   return (
-    <div>
+    <div className="signupContainer">
       <div className="signupParentDiv">
-        <img width="200px" height="200px" src={Logo} alt=''></img>
+        <img width="100px" src={Logo} alt="OLX Logo" />
         <form onSubmit={handleSubmit}>
-          <label htmlFor="fname">Username</label>
-          <br />
+          {/* Username */}
+          <label>Username</label>
           <input
             className="input"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            id="fname"
-            name="name"
-            defaultValue="John"
           />
-          <br />
-          <label htmlFor="fname">Email</label>
-          <br />
+          {errors.username && <p className="error">{errors.username}</p>}
+
+          {/* Email */}
+          <label>Email</label>
           <input
             className="input"
             type="email"
             value={email}
-            onChange={(e)=>setEmail(e.target.value)}
-            id="fname"
-            name="email"
-            defaultValue="John"
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <br />
-          <label htmlFor="lname">Phone</label>
-          <br />
+          {errors.email && <p className="error">{errors.email}</p>}
+
+          {/* Phone */}
+          <label>Phone</label>
           <input
             className="input"
             type="number"
             value={phone}
-            onChange={(e)=>setPhone(e.target.value)}
-            id="lname"
-            name="phone"
-            defaultValue="Doe"
+            onChange={(e) => setPhone(e.target.value)}
           />
-          <br />
-          <label htmlFor="lname">Password</label>
-          <br />
+          {errors.phone && <p className="error">{errors.phone}</p>}
+
+          {/* Password */}
+          <label>Password</label>
           <input
             className="input"
             type="password"
             value={password}
-            onChange={(e)=>setPassword(e.target.value)}
-            id="lname"
-            name="password"
-            defaultValue="Doe"
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <br />
-          <br />
-          <button>Signup</button>
+          {errors.password && <p className="error">{errors.password}</p>}
+
+          <button type="submit">Signup</button>
         </form>
-        <a >Login</a>
+        <p className="loginRedirect" onClick={() => history.push("/login")}>
+          Already have an account? <span>Login</span>
+        </p>
       </div>
     </div>
   );

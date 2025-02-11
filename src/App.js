@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Signup from './Pages/Signup'
 import Login from './Pages/Login'
 import Create from './Pages/Create'
+import View from './Pages/ViewPost';
 
 import { auth } from './firebase/config';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -13,6 +14,7 @@ import { onAuthStateChanged } from 'firebase/auth';
  */
 import Home from './Pages/Home';
 import { AuthContext, FirebaseContext } from './store/Context';
+import PostProvider from './store/PostContext'; // ✅ Correct import for PostProvider
 
 function App() {
   const {setUser} = useContext(AuthContext);
@@ -24,7 +26,8 @@ useEffect(() => {
 },[])
   return (
     <div>
-      <Router>
+      <PostProvider>
+        <Router>
         <Route exact path='/'>
           <Home /> 
         </Route>
@@ -37,7 +40,11 @@ useEffect(() => {
         <Route path='/create'>
           <Create />
         </Route>
+        <Route path='/view'>
+          <View />
+        </Route>
       </Router>
+      </PostProvider>
     </div>
   );
 }

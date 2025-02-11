@@ -31,7 +31,7 @@ export const FirebaseProvider = ({children}) => {
     }
 
     return( 
-        <FirebaseContext.Provider value={{auth,registerUser, db, storage, loginUser, logoutUser}}>
+        <FirebaseContext.Provider value={{auth,registerUser, storage, loginUser, logoutUser}}>
             {children}
         </FirebaseContext.Provider>
     )

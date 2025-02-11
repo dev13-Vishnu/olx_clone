@@ -1,38 +1,82 @@
+/* Centering the form */
+.signupContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f4f4f4;
+}
+
 .signupParentDiv {
-    border: 1px solid black;
-    width: max-content;
-    padding: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 6px;
-  }
-  
-  .signupParentDiv .input {
-    border-top-color: transparent;
-    border-left-color: transparent;
-    border-right-color: transparent;
-    outline-color: transparent;
-  }
-  
-  .signupParentDiv button {
-    width: 100%;
-    height: 48px;
-    /* border-color: transparent; */
-    background-color: #002f34;
-    color: whitesmoke;
-    font-weight: 900;
-  }
-  .signupParentDiv button:hover {
-    background-color: white;
-    color: #002f34;
-    border: 2px solid #002f34;
-  }
-  
-  .signupParentDiv a {
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-  }
-  
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 320px;
+}
+
+/* Logo Styling */
+.signupParentDiv img {
+  margin-bottom: 15px;
+}
+
+/* Input Styling */
+.signupParentDiv .input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.signupParentDiv .input:focus {
+  border-color: #002f34;
+  box-shadow: 0 0 5px rgba(0, 47, 52, 0.5);
+}
+
+/* Error Messages */
+.error {
+  color: red;
+  font-size: 12px;
+  text-align: left;
+  margin: 2px 0 5px 5px;
+}
+
+/* Button Styling */
+.signupParentDiv button {
+  width: 100%;
+  padding: 12px;
+  background: #002f34;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.signupParentDiv button:hover {
+  background: white;
+  color: #002f34;
+  border: 2px solid #002f34;
+}
+
+/* Login Redirect */
+.loginRedirect {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.loginRedirect span {
+  color: #002f34;
+  font-weight: bold;
+}
+
+.loginRedirect:hover span {
+  text-decoration: underline;
+}

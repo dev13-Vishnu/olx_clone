@@ -1,13 +1,21 @@
 import React, { useEffect, useState, useContext } from "react";
 import { collection, getDocs } from "firebase/firestore";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
 import { db } from "../../firebase/config"; // Import Firestore database
 import { AuthContext } from "../../store/Context";
 import Heart from "../../assets/Heart";
 import "./Post.css";
+import { PostContext } from "../../store/PostContext"; // ✅ Named import for PostContext
+
 
 function Posts() {
   const [products, setProducts] = useState([]);
   const { user } = useContext(AuthContext); // Get logged-in user
+
+  const {setPostDetails} =useContext(PostContext);
+
+  const history = useHistory();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,7 +48,13 @@ function Posts() {
         <div className="cards">
           {products.length > 0 ? (
             products.map((product) => (
-              <div className="card" key={product.id}>
+              <div
+               className="card"
+               key={product.id}
+               onClick={()=> {setPostDetails(product)
+                history.push('/view')
+               }}
+               >
                 <div className="favorite">
                   <Heart />
                 </div>
