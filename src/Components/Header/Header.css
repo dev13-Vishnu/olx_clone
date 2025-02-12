@@ -1,18 +1,24 @@
+/* Header Styling */
 .headerParentDiv {
-  padding: 10px;
+  padding: 10px 20px;
   background-color: whitesmoke;
   position: fixed;
-  width: 100vw;
+  width: 100%;
+  top: 0;
+  left: 0;
   z-index: 999;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Header Container */
 .headerChildDiv {
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
+/* Location Search Box */
 .placeSearch {
   width: 16em;
   height: 48px;
@@ -24,16 +30,15 @@
   background-color: white;
 }
 
-.placeSearch ::selection {
-  border-color: #23e5db;
-  outline-color: #23e5db;
-}
-
 .placeSearch input {
-  border-color: transparent;
-  outline-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
 }
 
+/* Product Search Bar */
 .productSearch {
   width: 35em;
   height: 48px;
@@ -42,8 +47,6 @@
   display: flex;
   align-items: center;
   background-color: white;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
@@ -54,30 +57,29 @@
 }
 
 .productSearch .input input {
-  border-color: transparent;
-  outline-color: transparent;
+  border: none;
+  outline: none;
   width: 100%;
-  align-items: center;
+  padding: 8px;
+  font-size: 14px;
 }
 
 .productSearch .searchAction {
   min-width: 48px;
   height: 48px;
-  position: relative;
   display: flex;
-  cursor: pointer;
+  align-items: center;
+  justify-content: center;
   background-color: #002f34;
   border-radius: 0 4px 4px 0;
+  cursor: pointer;
 }
 
 .productSearch .searchAction svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   fill: white;
 }
 
+/* Language Dropdown */
 .language {
   height: 48px;
   display: flex;
@@ -85,42 +87,84 @@
 }
 
 .language span {
-  /* justify-content: space-between;
-  align-items: center; */
   font-size: 15px;
-  white-space: normal;
-  text-overflow: ellipsis;
-  font-weight: bolder;
+  font-weight: bold;
   margin-right: 5px;
 }
 
-.language svg {
+/* Login & Logout Dropdown */
+.loginPage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
-.span {
-  text-decoration: none;
-  font-size: 16px;
-  white-space: normal;
-  text-overflow: ellipsis;
-  font-weight: bolder;
-  margin-right: 5px;
+.userDropdown {
+  position: relative;
+  display: inline-block;
 }
 
-.loginPage hr {
-  margin: 0;
-  background-color: black;
-  height: 2px;
+.userName {
+  font-weight: bold;
+  color: #002f34;
+  padding: 10px;
 }
 
-.loginPage a{
-  text-decoration: none;
+/* Logout Dropdown */
+.dropdownContent {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 120px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 10px 0;
+  text-align: center;
+  transition: 0.3s;
+  z-index: 10;
 }
 
+/* Show Dropdown on Hover */
+.userDropdown:hover .dropdownContent {
+  display: block;
+}
+
+/* Logout Button */
+.dropdownContent span {
+  display: block;
+  padding: 10px;
+  color: #002f34;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.dropdownContent span:hover {
+  background-color: #f2f2f2;
+}
+
+/* Sell Menu (Restored Old Look) */
 .sellMenu {
   position: relative;
   cursor: pointer;
 }
 
+.sellMenu .sellMenuContent {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #002f34;
+}
+
+/* Old Colors for Sell Button */
 .sellMenu .all {
   fill: white;
 }
@@ -136,29 +180,16 @@
 .sellMenu .right {
   fill: #3a77ff;
 }
-.sellMenu .sellMenuContent {
-  display: flex;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: #002f34;
-}
 
-/* .sellMenu .sellMenuContent svg {
-  align-items: center;
-} */
-.sellMenu .sellMenuContent span {
-  margin-left: 5px;
-}
-
+/* Mobile Responsive */
 @media only screen and (max-width: 700px) {
   .placeSearch,
   .productSearch,
   .sellMenu {
     display: none;
+  }
+
+  .headerChildDiv {
+    justify-content: space-between;
   }
 }

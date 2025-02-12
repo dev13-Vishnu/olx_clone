@@ -13,101 +13,106 @@ const Create = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
+  const [error, setError] = useState("");
 
-  const {storage} = useContext(FirebaseContext);
-  const {user} = useContext(AuthContext);
+  const { storage } = useContext(FirebaseContext);
+  const { user } = useContext(AuthContext);
 
   const history = useHistory();
 
+  // Validation function
+  const validateForm = () => {
+    if (!name || !category || !price || !image) {
+      setError("All fields are required!");
+      return false;
+    }
 
-  const handleSubmit = async() => {
-    if(!image) {
-      alert("Please select an image to upload.");
-      return
+    if (price <= 0) {
+      setError("Price must be a positive number!");
+      return false;
     }
-    if(!user) {
-      alert("You must be logged in to upload a product.");
-      return;
+
+    const allowedFileTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
+    if (!allowedFileTypes.includes(image.type)) {
+      setError("Only JPG, PNG, and GIF files are allowed!");
+      return false;
     }
+
+    setError(""); // Clear errors if everything is valid
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
 
     try {
       const storageRef = ref(storage, `/images/${image.name}`);
       const snapshot = await uploadBytes(storageRef, image);
       const downloadURL = await getDownloadURL(snapshot.ref);
 
-      await addDoc(collection (db,"products"),{
+      await addDoc(collection(db, "products"), {
         name,
         category,
         price,
-        url:downloadURL,
+        url: downloadURL,
         userId: user.uid,
         createdAt: new Date(),
       });
-      alert("Product uploaded successfully!");
-      history.push('/')
+
+      // alert("Product uploaded successfully!");
+      history.push("/");
     } catch (error) {
       console.error("Error uploading product:", error);
+      setError("Error uploading product. Please try again.");
     }
   };
 
   return (
     <Fragment>
       <Header />
-      <card>
-        <div className="centerDiv">
-          
-            <label htmlFor="fname">Name</label>
-            <br />
-            <input
-              className="input"
-              type="text"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              id="fname"
-              name="Name"
-              defaultValue="John"
-            />
-            <br />
-            <label htmlFor="fname">Category</label>
-            <br />
-            <input
-              className="input"
-              type="text"
-              value={category}
-              onChange={(e) => {
-                setCategory(e.target.value);
-              }}
-              id="fname"
-              name="category"
-              defaultValue="John"
-            />
-            <br />
-            <label htmlFor="fname">Price</label>
-            <br />
-            <input 
-              className="input" 
-              type="number" 
-              value={price}
-              onChange={(e) => {setPrice(e.target.value)}}
-              id="fname" 
-              name="Price" 
-            />
-            <br />
-          
-          <br />
-          <img alt="Posts" width="200px" height="200px" src={image?URL.createObjectURL(image):''}></img>
-          
-            <br />
-            <input onChange={(e)=> {
-              setImage(e.target.files[0])
-            }} type="file" />
-            <br />
-            <button onClick={handleSubmit} className="uploadBtn">upload and Submit</button>
-          
-        </div>
-      </card>
+      <div className="centerDiv">
+        <h2>Create Product</h2>
+
+        {error && <p className="errorMsg">{error}</p>}
+
+        <label htmlFor="name">Name</label>
+        <input
+          className="input"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          id="name"
+        />
+
+        <label htmlFor="category">Category</label>
+        <input
+          className="input"
+          type="text"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          id="category"
+        />
+
+        <label htmlFor="price">Price</label>
+        <input
+          className="input"
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          id="price"
+        />
+
+        <label>Image</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files[0])}
+        />
+
+        {image && <img alt="Preview" width="200px" height="200px" src={URL.createObjectURL(image)} />}
+
+        <button onClick={handleSubmit} className="uploadBtn">Upload and Submit</button>
+      </div>
     </Fragment>
   );
 };
